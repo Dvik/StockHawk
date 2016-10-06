@@ -76,7 +76,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
         networkToast();
       }
     }
-    RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+    final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
     recyclerView.setLayoutManager(new LinearLayoutManager(this));
     getLoaderManager().initLoader(CURSOR_LOADER_ID, null, this);
 
@@ -103,21 +103,29 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
                 @Override public void onInput(MaterialDialog dialog, CharSequence input) {
                   // On FAB click, receive user input. Make sure the stock doesn't already exist
                   // in the DB and proceed accordingly
-                  Cursor c = getContentResolver().query(QuoteProvider.Quotes.CONTENT_URI,
-                      new String[] { QuoteColumns.SYMBOL }, QuoteColumns.SYMBOL + "= ?",
-                      new String[] { input.toString() }, null);
-                  if (c.getCount() != 0) {
+                  if (input.toString().length() > 0) {
+                    Cursor c = getContentResolver().query(QuoteProvider.Quotes.CONTENT_URI,
+                            new String[]{QuoteColumns.SYMBOL}, QuoteColumns.SYMBOL + "= ?",
+                            new String[]{input.toString()}, null);
+                    if (c.getCount() != 0) {
+                      Toast toast =
+                              Toast.makeText(MyStocksActivity.this, R.string.toast_already_saved,
+                                      Toast.LENGTH_LONG);
+                      toast.setGravity(Gravity.CENTER, Gravity.CENTER, 0);
+                      toast.show();
+                      return;
+                    } else {
+                      // Add the stock to DB
+                      mServiceIntent.putExtra("tag", "add");
+                      mServiceIntent.putExtra("symbol", input.toString());
+                      startService(mServiceIntent);
+                    }
+                  }
+                  else {
                     Toast toast =
-                        Toast.makeText(MyStocksActivity.this, R.string.toast_already_saved,
-                            Toast.LENGTH_LONG);
-                    toast.setGravity(Gravity.CENTER, Gravity.CENTER, 0);
+                            Toast.makeText(MyStocksActivity.this, R.string.toast_blank_input,
+                                    Toast.LENGTH_LONG);
                     toast.show();
-                    return;
-                  } else {
-                    // Add the stock to DB
-                    mServiceIntent.putExtra("tag", "add");
-                    mServiceIntent.putExtra("symbol", input.toString());
-                    startService(mServiceIntent);
                   }
                 }
               })

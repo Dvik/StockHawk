@@ -46,9 +46,21 @@ public class QuoteCursorAdapter extends CursorRecyclerViewAdapter<QuoteCursorAda
   @Override
   public void onBindViewHolder(final ViewHolder viewHolder, final Cursor cursor){
     String symbolText = cursor.getString(cursor.getColumnIndex("symbol"));
+    if (symbolText.equals("null")) {
+      symbolText = "N/A";
+    }
     String bidPrice = cursor.getString(cursor.getColumnIndex("bid_price"));
+    if (bidPrice.equals("null")) {
+      bidPrice = "N/A";
+    }
     String perCentChange = cursor.getString(cursor.getColumnIndex("percent_change"));
+    if (perCentChange.equals("null")) {
+      perCentChange = "N/A";
+    }
     String change = cursor.getString(cursor.getColumnIndex("change"));
+    if (change.equals("null")) {
+      change = "N/A";
+    }
 
     viewHolder.symbol.setText(symbolText);
     viewHolder.symbol.setContentDescription(mContext.getString(R.string.a11y_stock_symbol,symbolText));
@@ -81,6 +93,7 @@ public class QuoteCursorAdapter extends CursorRecyclerViewAdapter<QuoteCursorAda
       viewHolder.change.setText(change);
       viewHolder.change.setContentDescription(mContext.getString(R.string.a11y_change,change));
     }
+
   }
 
   @Override public void onItemDismiss(int position) {

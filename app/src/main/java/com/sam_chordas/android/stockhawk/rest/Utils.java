@@ -30,6 +30,7 @@ public class Utils {
         if (count == 1){
           jsonObject = jsonObject.getJSONObject("results")
               .getJSONObject("quote");
+          if(!jsonObject.getString("Change").equals("null"))
           batchOperations.add(buildBatchOperation(jsonObject));
         } else{
           resultsArray = jsonObject.getJSONObject("results").getJSONArray("quote");
@@ -37,7 +38,8 @@ public class Utils {
           if (resultsArray != null && resultsArray.length() != 0){
             for (int i = 0; i < resultsArray.length(); i++){
               jsonObject = resultsArray.getJSONObject(i);
-              batchOperations.add(buildBatchOperation(jsonObject));
+              if(!jsonObject.getString("Change").equals("null"))
+                batchOperations.add(buildBatchOperation(jsonObject));
             }
           }
         }
@@ -49,24 +51,27 @@ public class Utils {
   }
 
   public static String truncateBidPrice(String bidPrice){
+    if(!bidPrice.equals("null"))
     bidPrice = String.format("%.2f", Float.parseFloat(bidPrice));
     return bidPrice;
   }
 
   public static String truncateChange(String change, boolean isPercentChange){
-    String weight = change.substring(0,1);
-    String ampersand = "";
-    if (isPercentChange){
-      ampersand = change.substring(change.length() - 1, change.length());
-      change = change.substring(0, change.length() - 1);
+    if(!change.equals("null")) {
+      String weight = change.substring(0, 1);
+      String ampersand = "";
+      if (isPercentChange) {
+        ampersand = change.substring(change.length() - 1, change.length());
+        change = change.substring(0, change.length() - 1);
+      }
+      change = change.substring(1, change.length());
+      double round = (double) Math.round(Double.parseDouble(change) * 100) / 100;
+      change = String.format("%.2f", round);
+      StringBuffer changeBuffer = new StringBuffer(change);
+      changeBuffer.insert(0, weight);
+      changeBuffer.append(ampersand);
+      change = changeBuffer.toString();
     }
-    change = change.substring(1, change.length());
-    double round = (double) Math.round(Double.parseDouble(change) * 100) / 100;
-    change = String.format("%.2f", round);
-    StringBuffer changeBuffer = new StringBuffer(change);
-    changeBuffer.insert(0, weight);
-    changeBuffer.append(ampersand);
-    change = changeBuffer.toString();
     return change;
   }
 
@@ -74,14 +79,14 @@ public class Utils {
     ContentProviderOperation.Builder builder = ContentProviderOperation.newInsert(
         QuoteProvider.Quotes.CONTENT_URI);
     try {
-      String change = jsonObject.getString("Change");
+
       builder.withValue(QuoteColumns.SYMBOL, jsonObject.getString("symbol"));
       builder.withValue(QuoteColumns.BIDPRICE, truncateBidPrice(jsonObject.getString("Bid")));
       builder.withValue(QuoteColumns.PERCENT_CHANGE, truncateChange(
           jsonObject.getString("ChangeinPercent"), true));
-      builder.withValue(QuoteColumns.CHANGE, truncateChange(change, false));
+      builder.withValue(QuoteColumns.CHANGE, truncateChange(jsonObject.getString("Change"), false));
       builder.withValue(QuoteColumns.ISCURRENT, 1);
-      if (change.charAt(0) == '-'){
+      if (jsonObject.getString("Change").charAt(0) == '-'){
         builder.withValue(QuoteColumns.ISUP, 0);
       }else{
         builder.withValue(QuoteColumns.ISUP, 1);
