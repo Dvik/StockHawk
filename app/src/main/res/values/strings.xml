@@ -15,5 +15,6 @@
   <string name="a11y_stock_price">Stock Price is: <xliff:g id="Price">%s</xliff:g></string>
   <string name="a11y_change">Change in Stock Price is: <xliff:g id="Change">%s</xliff:g></string>
   <string name="a11y_percent_change">Percent Change in Stock Price is: <xliff:g id="PercentChange">%s</xliff:g></string>
+  <string name="toast_already_saved">This stock is already saved!</string>
 
 </resources>
