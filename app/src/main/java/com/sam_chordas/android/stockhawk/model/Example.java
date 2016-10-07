@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class Example {
 
-    @SerializedName("stockResponse")
+    @SerializedName("query")
     @Expose
     private StockResponse stockResponse;
 
