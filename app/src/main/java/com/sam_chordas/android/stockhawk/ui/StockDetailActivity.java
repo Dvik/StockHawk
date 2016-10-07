@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.LineChart;
@@ -43,6 +44,7 @@ public class StockDetailActivity extends AppCompatActivity {
     TextView stockSymTv, bidPriceTv, emptyView;
     LineChart chart;
     ProgressBar progressBar;
+    RelativeLayout progressLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +61,9 @@ public class StockDetailActivity extends AppCompatActivity {
 
         String symbol = getIntent().getStringExtra(QuoteColumns.SYMBOL);
 
+        if(getSupportActionBar()!=null)
+        getSupportActionBar().setTitle(symbol);
+
         String stockQuery = "select * from yahoo.finance.historicaldata where symbol= '"
                 + symbol + "' and startDate = '" + getEndDate() + "' and endDate ='" + getStartDate() + "'";
 
@@ -72,7 +77,7 @@ public class StockDetailActivity extends AppCompatActivity {
         call.enqueue(new Callback<Example>() {
             @Override
             public void onResponse(Call<Example> call, Response<Example> response) {
-                progressBar.setVisibility(View.GONE);
+                progressLayout.setVisibility(View.GONE);
                 chart.setVisibility(View.VISIBLE);
                 chart.setNoDataText(getString(R.string.loading_chart));
                 if (response.body().getStockResponse().getCount() > 0) {
@@ -114,7 +119,7 @@ public class StockDetailActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<Example> call, Throwable t) {
-                progressBar.setVisibility(View.GONE);
+                progressLayout.setVisibility(View.GONE);
                 emptyView.setVisibility(View.VISIBLE);
 
             }
@@ -128,6 +133,7 @@ public class StockDetailActivity extends AppCompatActivity {
         chart = (LineChart) findViewById(R.id.chart);
         progressBar = (ProgressBar) findViewById(R.id.progress_chart);
         emptyView = (TextView) findViewById(R.id.empty_view);
+        progressLayout = (RelativeLayout) findViewById(R.id.progress_layout);
 
     }
 

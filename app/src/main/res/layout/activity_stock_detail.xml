@@ -38,27 +38,48 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="300dp">
-        <com.github.mikephil.charting.charts.LineChart
-            android:id="@+id/chart"
-            android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:layout_marginTop="10dp"
-            android:visibility="gone"/>
 
-        <ProgressBar
-            android:id = "@+id/progress_chart"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/chart"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:layout_marginTop="10dp"
+                android:visibility="gone" />
 
-         <TextView
-             android:id = "@+id/empty_view"
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             android:textSize="18sp"
-             android:text="@string/check_internet_connection"
-             android:layout_gravity="center"
-             android:visibility="gone"/>
+            <RelativeLayout
+                android:id="@+id/progress_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center">
+
+                <ProgressBar
+                    android:id="@+id/progress_chart"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center" />
+
+                <TextView
+                    android:id="@+id/loading_text_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/progress_chart"
+                    android:gravity="center"
+                    android:textSize="16sp"
+                    android:text="@string/loading_data_into_chart"
+                    android:layout_marginTop="5dp"/>
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/empty_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/check_internet_connection"
+                android:textSize="18sp"
+                tools:text = "dddbdhhdckcnckckcnkcnkcnh"
+                android:visibility="gone" />
+
 
         </FrameLayout>
 
