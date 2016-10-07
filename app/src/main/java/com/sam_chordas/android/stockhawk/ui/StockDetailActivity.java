@@ -48,18 +48,9 @@ public class StockDetailActivity extends AppCompatActivity {
         bidPriceTv.setText(getString(R.string.bid_price,bidPrice));
 
         String symbol = getIntent().getStringExtra(QuoteColumns.SYMBOL);
-        StringBuilder urlStringBuilder = new StringBuilder();
-        try {
-            urlStringBuilder.append(URLEncoder.encode("select * from yahoo.finance.quotes where symbol "
-                    + "= \'"+symbol+"\') and startDate =\'"+getEndDate()+"\'and endDate =\'"
-                    +getStartDate()+"\'", "UTF-8"));
-            urlStringBuilder.append("&format=json&diagnostics=true&env=store%3A%2F%2Fdatatables."
-                    + "org%2Falltableswithkeys&callback=");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
 
-        String stockQuery = urlStringBuilder.toString();
+        String stockQuery = "select * from yahoo.finance.historicaldata where symbol= '"
+                + symbol +"' and startDate = '" + getStartDate() + "' and endDate ='" + getEndDate() + "'";
 
         StockAPI apiService =
                 StockDataClient.getClient().create(StockAPI.class);
