@@ -79,9 +79,12 @@ public class Utils {
     ContentProviderOperation.Builder builder = ContentProviderOperation.newInsert(
         QuoteProvider.Quotes.CONTENT_URI);
     try {
-
       builder.withValue(QuoteColumns.SYMBOL, jsonObject.getString("symbol"));
       builder.withValue(QuoteColumns.BIDPRICE, truncateBidPrice(jsonObject.getString("Bid")));
+      builder.withValue(QuoteColumns.NAME, jsonObject.getString("Name"));
+      builder.withValue(QuoteColumns.VOLUME, jsonObject.getString("Volume"));
+      builder.withValue(QuoteColumns.LAST_TRADE_TIME, jsonObject.getString("LastTradeTime"));
+      builder.withValue(QuoteColumns.STOCK_EXCHANGE, jsonObject.getString("StockExchange"));
       builder.withValue(QuoteColumns.PERCENT_CHANGE, truncateChange(
           jsonObject.getString("ChangeinPercent"), true));
       builder.withValue(QuoteColumns.CHANGE, truncateChange(jsonObject.getString("Change"), false));

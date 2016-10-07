@@ -14,9 +14,17 @@ public class QuoteColumns {
   @DataType(DataType.Type.TEXT) @NotNull
   public static final String SYMBOL = "symbol";
   @DataType(DataType.Type.TEXT) @NotNull
+  public static final String NAME = "Name";
+  @DataType(DataType.Type.TEXT) @NotNull
   public static final String PERCENT_CHANGE = "percent_change";
   @DataType(DataType.Type.TEXT) @NotNull
   public static final String CHANGE = "change";
+  @DataType(DataType.Type.TEXT) @NotNull
+  public static final String VOLUME = "Volume";
+  @DataType(DataType.Type.TEXT) @NotNull
+  public static final String LAST_TRADE_TIME = "LastTradeTime";
+  @DataType(DataType.Type.TEXT) @NotNull
+  public static final String STOCK_EXCHANGE = "StockExchange";
   @DataType(DataType.Type.TEXT) @NotNull
   public static final String BIDPRICE = "bid_price";
   @DataType(DataType.Type.TEXT)

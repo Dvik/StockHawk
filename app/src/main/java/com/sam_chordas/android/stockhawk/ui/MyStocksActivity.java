@@ -24,6 +24,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.sam_chordas.android.stockhawk.R;
 import com.sam_chordas.android.stockhawk.data.QuoteColumns;
 import com.sam_chordas.android.stockhawk.data.QuoteProvider;
+import com.sam_chordas.android.stockhawk.model.Quote;
 import com.sam_chordas.android.stockhawk.rest.QuoteCursorAdapter;
 import com.sam_chordas.android.stockhawk.rest.RecyclerViewItemClickListener;
 import com.sam_chordas.android.stockhawk.rest.Utils;
@@ -81,14 +82,20 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
     getLoaderManager().initLoader(CURSOR_LOADER_ID, null, this);
 
     mCursorAdapter = new QuoteCursorAdapter(this, null);
+    recyclerView.setAdapter(mCursorAdapter);
+
     recyclerView.addOnItemTouchListener(new RecyclerViewItemClickListener(this,
             new RecyclerViewItemClickListener.OnItemClickListener() {
               @Override public void onItemClick(View v, int position) {
-                //TODO:
-                // do something on item click
+                Cursor c = mCursorAdapter.getCursor();
+                c.moveToPosition(position);
+                Intent i = new Intent(MyStocksActivity.this,StockDetailActivity.class);
+                i.putExtra(QuoteColumns.NAME,c.getString(c.getColumnIndex(QuoteColumns.NAME)));
+                i.putExtra(QuoteColumns.SYMBOL,c.getString(c.getColumnIndex(QuoteColumns.SYMBOL)));
+                i.putExtra(QuoteColumns.BIDPRICE,c.getString(c.getColumnIndex(QuoteColumns.BIDPRICE)));
+                startActivity(i);
               }
             }));
-    recyclerView.setAdapter(mCursorAdapter);
 
 
     FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -213,8 +220,9 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
   public Loader<Cursor> onCreateLoader(int id, Bundle args){
     // This narrows the return to only the stocks that are most current.
     return new CursorLoader(this, QuoteProvider.Quotes.CONTENT_URI,
-        new String[]{ QuoteColumns._ID, QuoteColumns.SYMBOL, QuoteColumns.BIDPRICE,
-            QuoteColumns.PERCENT_CHANGE, QuoteColumns.CHANGE, QuoteColumns.ISUP},
+        new String[]{ QuoteColumns._ID, QuoteColumns.SYMBOL, QuoteColumns.NAME,QuoteColumns.BIDPRICE,
+            QuoteColumns.PERCENT_CHANGE, QuoteColumns.CHANGE, QuoteColumns.VOLUME, QuoteColumns.LAST_TRADE_TIME,
+                QuoteColumns.STOCK_EXCHANGE, QuoteColumns.ISUP},
         QuoteColumns.ISCURRENT + " = ?",
         new String[]{"1"},
         null);
