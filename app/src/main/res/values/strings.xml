@@ -24,6 +24,7 @@
     <string name="loading_chart">Loading data for last 10 days</string>
     <string name="check_internet_connection">Check internet connection</string>
     <string name="loading_data_into_chart">Loading data into chart</string>
+    <string name="widget_label">Stock Widget</string>
 
 
 </resources>
