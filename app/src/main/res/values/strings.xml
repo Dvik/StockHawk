@@ -26,6 +26,7 @@
     <string name="loading_data_into_chart">Loading data into chart</string>
     <string name="widget_label">Stock Widget</string>
     <string name="loading_data_widget">Loading Data</string>
+    <string name="no_data_available">No data available!!\nCheck your internet connection</string>
 
 
 </resources>

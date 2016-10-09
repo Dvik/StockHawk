@@ -1,5 +1,6 @@
 <resources xmlns:xliff="http://schemas.android.com/tools">
     <string name="app_name">الأسهم هوك</string>
+    <string name="detail_act_name">الأسهم التحديثات</string>
 
     <string name="action_example">العمل سبيل المثال</string>
 
@@ -16,6 +17,16 @@
     <string name="a11y_change">التغير في سعر السهم هو <xliff:g id="Change">%s</xliff:g></string>
     <string name="a11y_percent_change">نسبة التغيير في سعر السهم هو <xliff:g id="PercentChange">%s</xliff:g></string>
     <string name="toast_already_saved">يتم حفظ هذه الأسهم بالفعل!</string>
+    <string name="toast_blank_input">الرجاء إدخال رمز السهم</string>
+    <string name="invalid_stock">رمز الأسهم الذي أدخلته غير صحيح</string>
+    <string name="bid_price">سعر السهم <xliff:g id="Price">%s</xliff:g> </string>
+    <string name="last_10">أسعار الأسهم بين <xliff:g id="Start">%s</xliff:g> و <xliff:g id="End">%s</xliff:g></string>
+    <string name="loading_chart">تحميل البيانات لمدة 10 يوما الماضية</string>
+    <string name="check_internet_connection">تحقق من اتصال الإنترنت</string>
+    <string name="loading_data_into_chart">تحميل البيانات إلى الرسم البياني</string>
+    <string name="widget_label">الأسهم القطعة</string>
+    <string name="loading_data_widget">تحميل البيانات</string>
+    <string name="no_data_available">لا توجد بيانات متاحة !! \ n تحقق من اتصال الإنترنت الخاص بك</string>
 
 
 </resources>

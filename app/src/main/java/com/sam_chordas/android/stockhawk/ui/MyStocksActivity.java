@@ -19,6 +19,7 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.sam_chordas.android.stockhawk.R;
@@ -53,6 +54,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
   private Context mContext;
   private Cursor mCursor;
   boolean isConnected;
+  TextView emptyView;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +67,8 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
     isConnected = activeNetwork != null &&
         activeNetwork.isConnectedOrConnecting();
     setContentView(R.layout.activity_my_stocks);
+
+    emptyView = (TextView) findViewById(R.id.empty_view_home);
     // The intent service is for executing immediate pulls from the Yahoo API
     // GCMTaskService can only schedule tasks, they cannot execute immediately
     mServiceIntent = new Intent(this, StockIntentService.class);
@@ -72,11 +76,16 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
       // Run the initialize task service so that some stocks appear upon an empty database
       mServiceIntent.putExtra("tag", "init");
       if (isConnected){
+        emptyView.setVisibility(View.GONE);
         startService(mServiceIntent);
       } else{
         networkToast();
       }
     }
+    if (!isCacheEmpty()) {
+      emptyView.setVisibility(View.GONE);
+    }
+
     final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
     recyclerView.setLayoutManager(new LinearLayoutManager(this));
     getLoaderManager().initLoader(CURSOR_LOADER_ID, null, this);
@@ -89,7 +98,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
               @Override public void onItemClick(View v, int position) {
                 Cursor c = mCursorAdapter.getCursor();
                 c.moveToPosition(position);
-                
+
                 Bundle extras = new Bundle();
                 extras.putString(QuoteColumns.NAME,c.getString(c.getColumnIndex(QuoteColumns.NAME)));
                 extras.putString(QuoteColumns.SYMBOL,c.getString(c.getColumnIndex(QuoteColumns.SYMBOL)));
@@ -190,6 +199,18 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
     actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
     actionBar.setDisplayShowTitleEnabled(true);
     actionBar.setTitle(mTitle);
+  }
+
+  public boolean isCacheEmpty() {
+    Cursor c = getContentResolver().query(QuoteProvider.Quotes.CONTENT_URI,
+            new String[]{QuoteColumns.SYMBOL}, null,
+            null, null);
+    int count = 0;
+    if (c != null) {
+      count = c.getCount();
+      c.close();
+    }
+    return count == 0;
   }
 
   @Override

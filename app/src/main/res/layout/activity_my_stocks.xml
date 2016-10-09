@@ -28,4 +28,13 @@
       fab:layout_anchor="recycler_view"
       fab:layout_anchorGravity="bottom | end"
       />
+
+  <TextView
+      android:id = "@+id/empty_view_home"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="@string/no_data_available"
+      android:layout_gravity="center"
+      android:gravity="center"
+      android:textSize="18sp"/>
 </FrameLayout>
