@@ -1,6 +1,9 @@
 package com.sam_chordas.android.stockhawk.rest;
 
 import android.content.ContentProviderOperation;
+import android.content.Context;
+import android.content.Intent;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import com.sam_chordas.android.stockhawk.data.QuoteColumns;
 import com.sam_chordas.android.stockhawk.data.QuoteProvider;
@@ -17,6 +20,9 @@ public class Utils {
   private static String LOG_TAG = Utils.class.getSimpleName();
 
   public static boolean showPercent = true;
+
+  public static final String ACTION_DATA_UPDATED =
+          "com.example.android.sunshine.app.ACTION_DATA_UPDATED";
 
   public static ArrayList quoteJsonToContentVals(String JSON){
     ArrayList<ContentProviderOperation> batchOperations = new ArrayList<>();
@@ -100,4 +106,9 @@ public class Utils {
     }
     return builder.build();
   }
-}
+  public static void updateWidgets(Context context) {
+    Log.d("sfdc","dvdv");
+    Intent dataUpdatedIntent = new Intent(ACTION_DATA_UPDATED)
+            .setPackage(context.getPackageName());
+    context.sendBroadcast(dataUpdatedIntent);
+  }}

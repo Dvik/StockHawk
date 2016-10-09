@@ -53,16 +53,16 @@ public class StockDetailActivity extends AppCompatActivity {
 
         initViews();
 
-        String name = getIntent().getStringExtra(QuoteColumns.NAME);
+        String name = getIntent().getExtras().getString(QuoteColumns.NAME);
         stockSymTv.setText(name);
 
-        String bidPrice = getIntent().getStringExtra(QuoteColumns.BIDPRICE);
+        String bidPrice = getIntent().getExtras().getString(QuoteColumns.BIDPRICE);
         bidPriceTv.setText(getString(R.string.bid_price, bidPrice));
 
-        String symbol = getIntent().getStringExtra(QuoteColumns.SYMBOL);
+        String symbol = getIntent().getExtras().getString(QuoteColumns.SYMBOL);
 
         if(getSupportActionBar()!=null)
-        getSupportActionBar().setTitle(symbol);
+        getSupportActionBar().setTitle(symbol.toUpperCase());
 
         String stockQuery = "select * from yahoo.finance.historicaldata where symbol= '"
                 + symbol + "' and startDate = '" + getEndDate() + "' and endDate ='" + getStartDate() + "'";

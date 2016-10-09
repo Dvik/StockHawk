@@ -89,10 +89,14 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
               @Override public void onItemClick(View v, int position) {
                 Cursor c = mCursorAdapter.getCursor();
                 c.moveToPosition(position);
+                
+                Bundle extras = new Bundle();
+                extras.putString(QuoteColumns.NAME,c.getString(c.getColumnIndex(QuoteColumns.NAME)));
+                extras.putString(QuoteColumns.SYMBOL,c.getString(c.getColumnIndex(QuoteColumns.SYMBOL)));
+                extras.putString(QuoteColumns.BIDPRICE,c.getString(c.getColumnIndex(QuoteColumns.BIDPRICE)));
+
                 Intent i = new Intent(MyStocksActivity.this,StockDetailActivity.class);
-                i.putExtra(QuoteColumns.NAME,c.getString(c.getColumnIndex(QuoteColumns.NAME)));
-                i.putExtra(QuoteColumns.SYMBOL,c.getString(c.getColumnIndex(QuoteColumns.SYMBOL)));
-                i.putExtra(QuoteColumns.BIDPRICE,c.getString(c.getColumnIndex(QuoteColumns.BIDPRICE)));
+                i.putExtras(extras);
                 startActivity(i);
               }
             }));
