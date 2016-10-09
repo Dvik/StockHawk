@@ -6,7 +6,8 @@
     android:background="@color/material_blue_500"
     android:gravity="center_vertical"
     android:paddingLeft="8dp"
-    android:paddingRight="8dp">
+    android:paddingRight="8dp"
+    android:id ="@+id/widget_item">
 
     <TextView
         android:id="@+id/stock_symbol"

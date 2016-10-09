@@ -5,6 +5,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -40,6 +41,7 @@ public class StockDetailActivity extends AppCompatActivity {
     LineChart chart;
     ProgressBar progressBar;
     RelativeLayout progressLayout;
+    FrameLayout chartContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +52,7 @@ public class StockDetailActivity extends AppCompatActivity {
 
         String name = getIntent().getExtras().getString(QuoteColumns.NAME);
         stockSymTv.setText(name);
+        stockSymTv.setContentDescription(getString(R.string.a11y_stock_symbol,name));
 
         String bidPrice = getIntent().getExtras().getString(QuoteColumns.BIDPRICE);
         bidPriceTv.setText(getString(R.string.bid_price, bidPrice));
@@ -82,7 +85,6 @@ public class StockDetailActivity extends AppCompatActivity {
                     List<Entry> entries = new ArrayList<>();
                     for (Quote quote : quoteList) {
                         entries.add(new Entry(getActualTime(quote.getDate()), Float.parseFloat(quote.getHigh())));
-                        Log.d("Label", quote.getDate());
                     }
                     LineDataSet dataSet = new LineDataSet(entries, "Stock Price Over Time");
                     LineData lineData = new LineData(dataSet);
@@ -104,8 +106,11 @@ public class StockDetailActivity extends AppCompatActivity {
 
                     chart.setData(lineData);
 
-                    chart.setDescription(getString(R.string.last_10, quoteList.get(0).getDate(),
-                            quoteList.get(quoteList.size() - 1).getDate()));
+                    String description = getString(R.string.last_10, quoteList.get(0).getDate(),
+                            quoteList.get(quoteList.size() - 1).getDate());
+                    chart.setDescription(description);
+                    chartContainer.setContentDescription(description);
+
                     chart.setDescriptionColor(ContextCompat.getColor(StockDetailActivity.this, android.R.color.white));
 
                     chart.invalidate();
@@ -129,6 +134,7 @@ public class StockDetailActivity extends AppCompatActivity {
         progressBar = (ProgressBar) findViewById(R.id.progress_chart);
         emptyView = (TextView) findViewById(R.id.empty_view);
         progressLayout = (RelativeLayout) findViewById(R.id.progress_layout);
+        chartContainer = (FrameLayout) findViewById(R.id.chart_container);
 
     }
 
